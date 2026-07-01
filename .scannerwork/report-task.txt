@@ -1,0 +1,6 @@
+projectKey=python-poc-demo
+serverUrl=http://localhost:9000
+serverVersion=26.6.0.123539
+dashboardUrl=http://localhost:9000/dashboard?id=python-poc-demo
+ceTaskId=09cb026a-df18-4a06-8fd2-d2e2193353f2
+ceTaskUrl=http://localhost:9000/api/ce/task?id=09cb026a-df18-4a06-8fd2-d2e2193353f2
