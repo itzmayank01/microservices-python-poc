@@ -44,3 +44,9 @@ if __name__ == "__main__":
 
 password = "admin123"  # hardcoded credential for demo
 unused_variable_for_demo = 42
+
+
+def get_user(user_id):
+    query = "SELECT * FROM users WHERE id = " + user_id  # SQL injection vulnerability
+    password = "hardcoded_secret_123"  # hardcoded credential
+    return query
