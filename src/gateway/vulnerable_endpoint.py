@@ -1,31 +1,31 @@
-from flask import Flask, request
 import sqlite3
+from flask import Flask, request
 
 app = Flask(__name__)
 
-def get_db():
-    return sqlite3.connect('users.db')
+@app.route('/users')
+def get_users():
+    username = request.args.get('username')  # source: user controlled input
+    
+    conn = sqlite3.connect('example.db')
+    cursor = conn.cursor()
+    
+    # Taint flow: username flows directly into SQL query without sanitization
+    cursor.execute("SELECT * FROM users WHERE username = '" + username + "'")  # sink
+    
+    rows = cursor.fetchall()
+    return str(rows)
 
-@app.route('/user')
-def get_user():
-    user_id = request.args.get('id')  # Step 1: tainted input from HTTP request
+@app.route('/files')  
+def read_file():
+    path = request.args.get('path')  # source: user controlled input
     
-    db = get_db()
-    cursor = db.cursor()
-    
-    query = "SELECT * FROM users WHERE id = " + user_id  # Step 2: tainted data concatenated
-    
-    cursor.execute(query)  # Step 3: tainted query reaches database sink
-    
-    result = cursor.fetchall()
-    return str(result)
-
-@app.route('/file')
-def get_file():
-    filename = request.args.get('name')  # tainted input
-    
-    with open('/var/data/' + filename, 'r') as f:  # path traversal vulnerability
+    # Taint flow: path flows directly into file open without sanitization
+    with open(path, 'r') as f:  # sink: path traversal
         return f.read()
 
-if __name__ == '__main__':
-    app.run()
+
+    
+    
+    
+    
